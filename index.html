@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- displays site properly based on user's device -->
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./design/images/favicon-32x32.png">
+  <link rel="stylesheet" href="./style.css">
+
+  <title>Frontend Mentor | Expenses chart component</title>
+
+  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+  <style>
+    .attribution {
+      font-size: 11px;
+      text-align: center;
+    }
+
+    .attribution a {
+      color: hsl(228, 45%, 44%);
+    }
+  </style>
+
+  <!-- Import echart.min.js -->
+  <script src="./echarts.min.js"></script>
+</head>
+
+<body>
+  <!-- wrapper -->
+  <div class="wrapper">
+    <!-- top-wrapper -->
+    <div class="top-wrapper">
+      <div class="my-balance">
+        <span>My balance</span>
+        <h3 class="balance">
+          $921.48
+        </h3>
+      </div>
+      <div class="logo">
+        <div class="circle-empty"></div>
+        <div class="circle-black"></div>
+      </div>
+    </div>
+
+    <!-- Chart Table -->
+    <div class="chart-wrapper">
+      <div class="chart">
+        <h3>Spending - Last 7 days</h3>
+        <div class="data-wrapper"></div>
+        <div class="info">
+          <div class="month">
+            <span id="this-month">Total this month</span>
+            <h2>$478.33</h2>
+          </div>
+          <div class="from-last-month">
+            <span>+2.4%</span>
+            <br />
+            <span id="last-month">from last month</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="attribution">
+    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>.
+    Coded by <a href="#">Shawn Liang</a>.
+  </div>
+  <script>
+    let myChart = echarts.init(document.querySelector('.data-wrapper'));
+
+    let checkName = '';
+
+    let option = {
+      tooltip: {
+        trigger: 'item',
+        triggerOn: 'click',
+        formatter: '{c}$',
+        backgroundColor: 'rgba(50,50,50,1)',
+        textStyle: {
+          color: '#fff',
+          fontWeight: 'bold',
+          fontFamily: 'DM Sans',
+          fontSize: 16,
+        },
+        borderColor: '#333',
+        borderWidth: 0
+      },
+      xAxis: {
+        type: 'category',
+        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        axisLine: {
+          show: false
+        },
+        axisTick: {
+          show: false
+        }
+      },
+      yAxis: {
+        type: 'value',
+        show: false
+      },
+      grid: {
+        left: '0%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      series: [
+        {
+          name: 'spend',
+          data: [17.45, 34.91, 52.36, 31.07, 23.39, 43.28, 25.48],
+          type: 'bar',
+          itemStyle: {
+            normal: {
+              barBorderRadius: [10, 10, 10, 10],
+              label: { show: false },
+              color: function (params) {
+                if (checkName === params.name) {
+                  return '#76b5bc';
+                } else {
+                  return '#ec775f';
+                }
+              }
+            },
+            emphasis: {
+              disabled: true,
+              color: '#f8e9dd'
+            }
+          }
+        }
+      ]
+    }
+
+
+    myChart.setOption(option);
+    myChart.on('click', function (params) {
+      checkName = params.name;
+      myChart.setOption(option);
+    })
+
+    window.onresize = function () {
+      myChart.resize();
+    }
+  </script>
+
+</body>
+
+</html>
